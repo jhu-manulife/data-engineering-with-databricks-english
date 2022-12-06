@@ -247,6 +247,10 @@ SELECT count(*) FROM deduped_users
 
 -- COMMAND ----------
 
+SELECT * FROM deduped_users;
+
+-- COMMAND ----------
+
 -- MAGIC %md <i18n value="09a6b88a-e02c-4835-ab62-0e82a1162c22"/>
 -- MAGIC 
 -- MAGIC  

@@ -69,7 +69,11 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/ecommerce/raw/events-kafka/
+CREATE TABLE events_json 
+  (key BINARY, offset LONG, partition INTEGER, timestamp LONG, topic STRING, value BINARY)
+USING JSON
+LOCATION
+'${da.paths.datasets}/ecommerce/raw/events-kafka/'
 
 -- COMMAND ----------
 
@@ -100,7 +104,8 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+CREATE OR REPLACE TABLE events_raw 
+  (key BINARY, offset LONG, partition INTEGER, timestamp LONG, topic STRING, value BINARY)
 
 -- COMMAND ----------
 
@@ -129,7 +134,8 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+CREATE OR REPLACE TABLE events_raw AS
+SELECT * FROM events_json
 
 -- COMMAND ----------
 
@@ -141,7 +147,7 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN>
+SELECT * FROM events_raw LIMIT 10;
 
 -- COMMAND ----------
 
@@ -176,7 +182,11 @@
 -- COMMAND ----------
 
 -- TODO
-<FILL_IN> ${da.paths.datasets}/ecommerce/raw/item-lookup
+CREATE OR REPLACE TABLE item_lookup AS SELECT * FROM parquet.`${da.paths.datasets}/ecommerce/raw/item-lookup`
+
+-- COMMAND ----------
+
+SELECT * FROM item_lookup;
 
 -- COMMAND ----------
 

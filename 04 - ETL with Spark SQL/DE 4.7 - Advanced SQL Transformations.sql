@@ -51,6 +51,14 @@
 
 -- COMMAND ----------
 
+SELECT * FROM events_raw;
+
+-- COMMAND ----------
+
+DESCRIBE EXTENDED events_raw;
+
+-- COMMAND ----------
+
 CREATE OR REPLACE TEMP VIEW events_strings AS
   SELECT string(key), string(value) 
   FROM events_raw;

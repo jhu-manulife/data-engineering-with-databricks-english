@@ -112,8 +112,8 @@ DESCRIBE HISTORY sales
 
 -- COMMAND ----------
 
--- INSERT OVERWRITE sales
--- SELECT *, current_timestamp() FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-historical`
+INSERT OVERWRITE sales
+SELECT *, current_timestamp() FROM parquet.`${da.paths.datasets}/ecommerce/raw/sales-historical`
 
 -- COMMAND ----------
 

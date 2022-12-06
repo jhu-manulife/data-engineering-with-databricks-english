@@ -79,7 +79,7 @@ FROM parquet.`${DA.paths.datasets}/weather/StationData-parquet`
 
 -- TODO
 
-<FILL-IN> ${da.schema_name}
+CREATE SCHEMA IF NOT EXISTS ${da.schema_name};
 
 -- COMMAND ----------
 
@@ -105,7 +105,7 @@ FROM parquet.`${DA.paths.datasets}/weather/StationData-parquet`
 
 -- TODO
 
-<FILL-IN> ${da.schema_name}
+USE ${da.schema_name};
 
 -- COMMAND ----------
 
@@ -130,7 +130,7 @@ FROM parquet.`${DA.paths.datasets}/weather/StationData-parquet`
 
 -- TODO
 
-<FILL-IN>
+CREATE OR REPLACE TABLE weather_managed AS
 SELECT * 
 FROM parquet.`${DA.paths.datasets}/weather/StationData-parquet`
 
@@ -159,7 +159,7 @@ FROM parquet.`${DA.paths.datasets}/weather/StationData-parquet`
 
 -- TODO
 
-<FILL-IN>
+CREATE OR REPLACE TABLE weather_external
 LOCATION "${da.paths.working_dir}/lab/external"
 AS SELECT * 
 FROM parquet.`${DA.paths.datasets}/weather/StationData-parquet`
@@ -250,7 +250,7 @@ DESCRIBE EXTENDED weather_external
 
 -- TODO
 
-<FILL_IN> ${da.schema_name}
+DROP SCHEMA ${da.schema_name} CASCADE;
 
 -- COMMAND ----------
 
@@ -275,8 +275,8 @@ DESCRIBE EXTENDED weather_external
 -- COMMAND ----------
 
 -- MAGIC %python
--- MAGIC # files = dbutils.fs.ls(managedTablePath)
--- MAGIC # display(files)
+-- MAGIC files = dbutils.fs.ls(managedTablePath)
+-- MAGIC display(files)
 
 -- COMMAND ----------
 
@@ -323,8 +323,9 @@ USE ${da.schema_name};
 -- COMMAND ----------
 
 -- TODO
-
-<FILL_IN>
+CREATE OR REPLACE TABLE weather_managed AS
+SELECT * 
+FROM parquet.`${DA.paths.datasets}/weather/StationData-parquet`
 
 -- COMMAND ----------
 
@@ -368,7 +369,7 @@ USE ${da.schema_name};
 
 -- TODO
 
-<FILL-IN>
+CREATE OR REPLACE VIEW celsius
 AS (SELECT *
   FROM weather_managed
   WHERE UNIT = "C")
@@ -396,7 +397,7 @@ AS (SELECT *
 
 -- TODO
 
-<FILL-IN>
+CREATE OR REPLACE TEMPORARY VIEW celsius_temp
 AS (SELECT *
   FROM weather_managed
   WHERE UNIT = "C")
@@ -424,7 +425,7 @@ AS (SELECT *
 
 -- TODO
 
-<FILL-IN>
+CREATE GLOBAL TEMPORARY VIEW celsius_global
 AS (SELECT *
   FROM weather_managed
   WHERE UNIT = "C")

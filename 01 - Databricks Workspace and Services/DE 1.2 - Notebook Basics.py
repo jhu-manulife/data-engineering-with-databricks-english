@@ -60,7 +60,8 @@
 
 # COMMAND ----------
 
-print("I'm running Python!")
+# MAGIC %python
+# MAGIC print("I'm running Python!")
 
 # COMMAND ----------
 
@@ -107,6 +108,11 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
+# MAGIC %sql
+# MAGIC SELECT "I'm running SQL!"
+
+# COMMAND ----------
+
 # MAGIC %md <i18n value="828d14d2-a661-45e4-a555-0b86896c31d4"/>
 # MAGIC 
 # MAGIC 
@@ -136,7 +142,8 @@ print("I'm running Python!")
 
 # COMMAND ----------
 
-print("Hello Python!")
+# MAGIC %python
+# MAGIC print("Hello Python!")
 
 # COMMAND ----------
 
@@ -254,10 +261,11 @@ print("Hello Python!")
 
 # COMMAND ----------
 
-print(f"DA:                   {DA}")
-print(f"DA.username:          {DA.username}")
-print(f"DA.paths.working_dir: {DA.paths.working_dir}")
-print(f"DA.schema_name:       {DA.schema_name}")
+# MAGIC %python
+# MAGIC print(f"DA:                   {DA}")
+# MAGIC print(f"DA.username:          {DA.username}")
+# MAGIC print(f"DA.paths.working_dir: {DA.paths.working_dir}")
+# MAGIC print(f"DA.schema_name:       {DA.schema_name}")
 
 # COMMAND ----------
 
@@ -289,8 +297,9 @@ print(f"DA.schema_name:       {DA.schema_name}")
 
 # COMMAND ----------
 
-path = f"{DA.paths.datasets}"
-dbutils.fs.ls(path)
+# MAGIC %python
+# MAGIC path = f"{DA.paths.datasets}"
+# MAGIC dbutils.fs.ls(path)
 
 # COMMAND ----------
 
@@ -307,9 +316,10 @@ dbutils.fs.ls(path)
 
 # COMMAND ----------
 
-path = f"{DA.paths.datasets}"
-files = dbutils.fs.ls(path)
-display(files)
+# MAGIC %python
+# MAGIC path = f"{DA.paths.datasets}"
+# MAGIC files = dbutils.fs.ls(path)
+# MAGIC display(files)
 
 # COMMAND ----------
 
@@ -390,7 +400,8 @@ display(files)
 
 # COMMAND ----------
 
-DA.cleanup()
+# MAGIC %python
+# MAGIC DA.cleanup()
 
 # COMMAND ----------
 

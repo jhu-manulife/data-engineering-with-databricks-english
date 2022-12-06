@@ -250,6 +250,22 @@ WHEN NOT MATCHED AND u.type = "insert"
 
 -- COMMAND ----------
 
+MERGE INTO students b
+USING updates u
+ON b.id=u.id
+WHEN MATCHED AND u.type = "update"
+  THEN UPDATE SET *
+WHEN MATCHED AND u.type = "delete"
+  THEN DELETE
+WHEN NOT MATCHED AND u.type IN ('update', 'insert')
+  THEN INSERT *
+
+-- COMMAND ----------
+
+SELECT * FROM students;
+
+-- COMMAND ----------
+
 -- MAGIC %md <i18n value="4eca2c53-e457-4964-875e-d39d9205c3c6"/>
 -- MAGIC 
 -- MAGIC 
