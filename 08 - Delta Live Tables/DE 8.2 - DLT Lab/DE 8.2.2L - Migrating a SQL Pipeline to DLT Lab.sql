@@ -34,8 +34,9 @@
 -- COMMAND ----------
 
 -- TODO
-CREATE <FILL-IN>
-AS SELECT <FILL-IN>
+CREATE OR REFRESH STREAMING LIVE TABLE recordings_bronze
+COMMENT "The raw recordings, ingested from source location"
+AS SELECT *, current_timestamp() receipt_time, input_file_name() source_file
   FROM cloud_files("${source}", "json", map("cloudFiles.schemaHints", "time DOUBLE, mrn INTEGER"))
 
 -- COMMAND ----------
@@ -59,9 +60,10 @@ AS SELECT <FILL-IN>
 -- COMMAND ----------
 
 -- TODO
-CREATE <FILL-IN> pii
+CREATE OR REFRESH STREAMING LIVE TABLE pii
+COMMENT "patient pii data, ingest from healthcare/patient"
 AS SELECT *
-  FROM cloud_files("${datasets_path}/healthcare/patient", "csv", map(<FILL-IN>))
+  FROM cloud_files("${datasets_path}/healthcare/patient", "csv", map("cloudFiles.inferColumnTypes", "true", "header", "true"))
 
 -- COMMAND ----------
 
@@ -88,14 +90,17 @@ AS SELECT *
 
 -- TODO
 CREATE OR REFRESH STREAMING LIVE TABLE recordings_enriched
-  (<FILL-IN add a constraint to drop records when heartrate ! > 0>)
+  (CONSTRAINT valid_heartrate EXPECT (heartrate > 0) ON VIOLATION DROP ROW)
+COMMENT "The cleaned recordings with valid heartrate"
 AS SELECT 
-  CAST(<FILL-IN>) device_id, 
-  <FILL-IN mrn>, 
-  <FILL-IN heartrate>, 
-  CAST(FROM_UNIXTIME(DOUBLE(time), 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) time 
-  FROM STREAM(live.recordings_bronze)
-  <FILL-IN specify an inner join with the pii table on the mrn field>
+  CAST(r.device_id AS INTEGER) device_id, 
+  r.mrn, 
+  r.heartrate, 
+  CAST(FROM_UNIXTIME(DOUBLE(time), 'yyyy-MM-dd HH:mm:ss') AS TIMESTAMP) time,
+  p.name
+  FROM STREAM(live.recordings_bronze) r
+  INNER JOIN LIVE.pii p
+  ON r.mrn = p.mrn
 
 -- COMMAND ----------
 
@@ -116,9 +121,12 @@ AS SELECT
 -- COMMAND ----------
 
 -- TODO
-CREATE <FILL-IN> daily_patient_avg
-  COMMENT <FILL-IN insert comment here>
-AS SELECT <FILL-IN>
+CREATE OR REFRESH LIVE TABLE daily_patient_avg
+  COMMENT "patient heartrate daily average"
+AS SELECT mrn, name, AVG(heartrate) as avg_heartrate, 
+          date(time) as date
+FROM LIVE.recordings_enriched
+GROUP BY mrn, name, date(time)
 
 -- COMMAND ----------
 
